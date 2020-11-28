@@ -89,7 +89,52 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    private int [] swap(int [] route, int i, int j){
+    private int [] reverseRoute(int [] route, int i, int j){
+
+        int iIndex = 0;
+        int jIndex = 0;
+
+        for(int k = 0 ; k < route.length; k++){
+
+            if(route[k] == i)
+                iIndex = k;
+
+            if(route[k] == j)
+                jIndex = k;
+
+        }
+
+        if(iIndex < jIndex){
+            while(iIndex < jIndex){
+
+                int tmp = route[iIndex];
+                route[iIndex] = route[jIndex];
+                route[jIndex] = tmp;
+
+                iIndex++;
+                jIndex--;
+
+            }
+        }
+        else
+        {
+            while(jIndex < iIndex){
+
+                int tmp = route[iIndex];
+                route[iIndex] = route[jIndex];
+                route[jIndex] = tmp;
+
+                iIndex--;
+                jIndex++;
+
+            }
+        }
+
+        return route;
+
+    }
+
+    private int [] swapRoute(int [] route, int i, int j){
 
         int iIndex = 0;
         int jIndex = 0;
@@ -113,7 +158,13 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    public void algorithm(int [][] graph){
+    private int [] insertRoute(int [] route, int i, int j){
+
+        return  route;
+
+    }
+
+    public void algorithm(int [][] graph, int routeOption){
 
         Random random = new Random();
 
@@ -127,7 +178,7 @@ public class SymulowaneWyzarzanie {
         minCost = dataInitialization(graph, route, minCost);
         int actualCost;
 
-        long finishTime = System.currentTimeMillis() + 30 * 1000; //10 sekund
+        long finishTime = System.currentTimeMillis() + 7 * 1000; //10 sekund
         boolean test = true;
 
         while(test){
@@ -147,7 +198,13 @@ public class SymulowaneWyzarzanie {
 
             }
 
-            route = swap(route, i, j);
+            if(routeOption == 1)
+                route = swapRoute(route, i, j);
+            else if(routeOption == 2)
+                route = reverseRoute(route, i, j);
+            else
+                route = insertRoute(route, i, j);
+
             actualCost = getRouteCost(graph, route);
 
             if(actualCost - minCost <= 0){

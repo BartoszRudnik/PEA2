@@ -9,13 +9,13 @@ public class Main {
         SymulowaneWyzarzanie sw = new SymulowaneWyzarzanie();
         Data data = new Data();
 
-        data.readData("test17");
+        data.readData("test10");
 
         int [][] graph = data.getGraph();
         int numberOfVertex = data.getV();
 
         sw.setNumberOfVertex(numberOfVertex);
-        sw.algorithm(graph);
+        sw.algorithm(graph, 2);
 
     }
 
