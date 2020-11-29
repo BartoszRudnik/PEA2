@@ -15,7 +15,7 @@ public class Main {
         int numberOfVertex = data.getV();
 
         sw.setNumberOfVertex(numberOfVertex);
-        sw.algorithm(graph, 2);
+        sw.algorithm(graph, 3);
 
     }
 

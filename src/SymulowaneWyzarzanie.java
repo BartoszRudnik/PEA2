@@ -91,18 +91,9 @@ public class SymulowaneWyzarzanie {
 
     private int [] reverseRoute(int [] route, int i, int j){
 
-        int iIndex = 0;
-        int jIndex = 0;
-
-        for(int k = 0 ; k < route.length; k++){
-
-            if(route[k] == i)
-                iIndex = k;
-
-            if(route[k] == j)
-                jIndex = k;
-
-        }
+        int [] index = getIndex(route, i, j);
+        int iIndex = index[0];
+        int jIndex = index[1];
 
         if(iIndex < jIndex){
             while(iIndex < jIndex){
@@ -136,18 +127,9 @@ public class SymulowaneWyzarzanie {
 
     private int [] swapRoute(int [] route, int i, int j){
 
-        int iIndex = 0;
-        int jIndex = 0;
-
-        for(int k = 0 ; k < route.length; k++){
-
-            if(route[k] == i)
-                iIndex = k;
-
-            if(route[k] == j)
-                jIndex = k;
-
-        }
+        int [] index = getIndex(route, i, j);
+        int iIndex = index[0];
+        int jIndex = index[1];
 
         int tmp = route[iIndex];
 
@@ -158,9 +140,74 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    private int [] insertRoute(int [] route, int i, int j){
+    public int [] insertRoute(int [] route, int i, int j){
+
+        int indexI = 0;
+        int tmp = 0;
+        int [] tmpArray = new int[route.length];
+
+        for(int k = 1; k < route.length - 1; k++){
+
+            if(route[k] == i){
+
+                indexI = k;
+                break;
+
+            }
+
+        }
+
+        if(indexI > j) {
+
+            for (int k = j; k < route.length; k++) {
+
+                if (route[k] != i)
+                    tmpArray[k - tmp] = route[k];
+                else
+                    tmp = 1;
+
+            }
+
+            route[j] = i;
+
+            for (int k = j + 1; k < route.length; k++) {
+
+                route[k] = tmpArray[k - 1];
+
+            }
+
+        }
+        else{
+
+            for(int k = indexI; k < j; k++){
+
+                route[k] = route[k + 1];
+
+            }
+
+            route[j] = i;
+
+        }
 
         return  route;
+
+    }
+
+    private int [] getIndex(int [] route, int i, int j){
+
+        int [] index = new int[2];
+
+        for(int k = 1 ; k < route.length - 1; k++){
+
+            if(route[k] == i)
+                index[0] = k;
+
+            if(route[k] == j)
+                index[1] = k;
+
+        }
+
+        return index;
 
     }
 
