@@ -315,15 +315,15 @@ public class SymulowaneWyzarzanie {
 
                 } else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
 
+                    minCost = actualCost;
+                    minRoute = route.clone();
+
                     if(minCost < resultCost){
 
                         resultCost = minCost;
                         resultRoute = minRoute.clone();
 
                     }
-
-                    minCost = actualCost;
-                    minRoute = route.clone();
 
                 }
 

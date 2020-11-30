@@ -5,14 +5,14 @@ public class Main {
         SymulowaneWyzarzanie sw = new SymulowaneWyzarzanie();
         Data data = new Data();
 
-        //data.readData2("ftv47.atsp");
-        //data.readData("test15");
+        data.readData2("ftv47.atsp");
+        //data.readData("test17");
 
         int [][] graph = data.getGraph();
         int numberOfVertex = data.getV();
 
         sw.setNumberOfVertex(numberOfVertex);
-        sw.algorithm(graph, 2, 2, 100);
+        sw.algorithm(graph, 2, 2, numberOfVertex * numberOfVertex);
 
     }
 
