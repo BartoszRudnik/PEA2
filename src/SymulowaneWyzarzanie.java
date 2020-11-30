@@ -55,7 +55,7 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    private int dataInitialization(int [][] graph, int [] route, int minCost){
+    private int [] dataInitialization(int [][] graph, int [] route, int minCost){
 
         int [] minRoute = new int[numberOfVertex + 1];
 
@@ -69,14 +69,14 @@ public class SymulowaneWyzarzanie {
 
         }
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 10; i++){
 
             int actualCost = getRouteCost(graph, route);
 
             if(actualCost < minCost){
 
                 minCost = actualCost;
-                minRoute = route;
+                minRoute = route.clone();
 
             }
 
@@ -84,8 +84,31 @@ public class SymulowaneWyzarzanie {
 
         }
 
-        route = minRoute;
-        return minCost;
+        return minRoute;
+
+    }
+
+    private double geometricCooling(double startTemp, double scale){
+
+        startTemp *= scale;
+
+        return startTemp;
+
+    }
+
+    private double linearCooling(double startTemp, double scale){
+
+        startTemp -= scale;
+
+        return  startTemp;
+
+    }
+
+    private double logarithmicCooling(double startTemp, double scale){
+
+        startTemp /= (1 + scale / startTemp);
+
+        return  startTemp;
 
     }
 
@@ -211,64 +234,11 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    public void algorithm(int [][] graph, int routeOption){
-
-        Random random = new Random();
-
-        int minCost = Integer.MAX_VALUE;
-        int [] resultRoute = new int[numberOfVertex + 1];
-        int [] route = new int[numberOfVertex + 1];
-        double startTemp = 1.0;
-        double finishTemp = 0.0001;
-        double scale = 0.95;
-
-        minCost = dataInitialization(graph, route, minCost);
-        int actualCost;
-
-        long finishTime = System.currentTimeMillis() + 7 * 1000; //10 sekund
-        boolean test = true;
-
-        while(test){
-
-            int i = 1;
-            int j = 1;
-
-            while(i == j){
-
-                i = random.nextInt((numberOfVertex));
-                j = random.nextInt((numberOfVertex));
-
-                if(i == 0)
-                    i++;
-                if(j == 0)
-                    j++;
-
-            }
-
-            if(routeOption == 1)
-                route = swapRoute(route, i, j);
-            else if(routeOption == 2)
-                route = reverseRoute(route, i, j);
-            else
-                route = insertRoute(route, i, j);
-
-            actualCost = getRouteCost(graph, route);
-
-            if(actualCost - minCost <= 0){
-
-                minCost = actualCost;
-                resultRoute = route.clone();
-
-            }
-
-            if (System.currentTimeMillis() > finishTime)
-                test = false;
-
-        }
+    private void getResultRoute(int [] route){
 
         for(int i = 0; i <= numberOfVertex; i++){
 
-            System.out.print(resultRoute[i]);
+            System.out.print(route[i]);
 
             if(i != numberOfVertex)
                 System.out.print("-");
@@ -277,7 +247,111 @@ public class SymulowaneWyzarzanie {
 
         }
 
-        System.out.println(minCost);
+    }
+
+    public void algorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit){
+
+        Random random = new Random();
+
+        int [] minRoute = new int[numberOfVertex + 1];
+
+        int minCost = Integer.MAX_VALUE;
+        int actualCost;
+        double startTemp = getNumberOfVertex() * 20;
+        double finishTemp = 0.0001;
+        double scale = 0.96;
+
+        minRoute = dataInitialization(graph, minRoute, minCost);
+        minCost = getRouteCost(graph, minRoute);
+
+        int resultCost = minCost;
+        int [] resultRoute = minRoute.clone();
+        int [] route = minRoute.clone();
+
+        long finishTime = System.currentTimeMillis() + 10 * 1000;
+        boolean test = true;
+
+        while(startTemp > finishTemp && test){
+
+            for(int k = 0; k < iterationsLimit; k++) {
+
+                int i = 1;
+                int j = 1;
+                double moveTest = random.nextDouble();
+
+                while (i == j) {
+
+                    i = random.nextInt((numberOfVertex));
+                    j = random.nextInt((numberOfVertex));
+
+                    if (i == 0)
+                        i++;
+                    if (j == 0)
+                        j++;
+
+                }
+
+                if (routeOption == 0)
+                    route = swapRoute(route, i, j);
+                else if (routeOption == 1)
+                    route = reverseRoute(route, i, j);
+                else if (routeOption == 2)
+                    route = insertRoute(route, i, j);
+
+                actualCost = getRouteCost(graph, route);
+
+                if (actualCost - minCost <= 0) {
+
+                    minCost = actualCost;
+                    minRoute = route.clone();
+
+                    if(minCost < resultCost){
+
+                        resultCost = minCost;
+                        resultRoute = minRoute.clone();
+
+                    }
+
+                } else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
+
+                    if(minCost < resultCost){
+
+                        resultCost = minCost;
+                        resultRoute = minRoute.clone();
+
+                    }
+
+                    minCost = actualCost;
+                    minRoute = route.clone();
+
+                }
+
+            }
+
+            if(coolingOption == 0){
+
+                startTemp = geometricCooling(startTemp, scale);
+
+            }
+            else if(coolingOption == 1){
+
+                startTemp = linearCooling(startTemp, scale);
+
+            }
+            else if(coolingOption == 2){
+
+                startTemp = logarithmicCooling(startTemp, scale);
+
+            }
+
+            if (System.currentTimeMillis() > finishTime)
+                test = false;
+
+        }
+
+        getResultRoute(resultRoute);
+
+        System.out.println(getRouteCost(graph, resultRoute));
 
     }
 
