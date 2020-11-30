@@ -46,7 +46,7 @@ public class Data {
 
                 for(int j = 0; j < v; j++){
 
-                    System.out.print(graph[i][j] + " ");
+                    System.out.printf("%-10d", graph[i][j]);
 
                 }
 
@@ -148,6 +148,55 @@ public class Data {
                 for(int j = 0; j < v; j++)
                 {
                     graph[i][j] = Integer.parseInt(str[j]);
+                }
+
+            }
+
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void readData2(String fileName){
+
+        try {
+
+            FileInputStream fileInputStream = new FileInputStream(fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
+
+            String line = new String();
+
+            for(int i = 0; i < 4; i++)
+                line = br.readLine();
+
+            line = line.substring(11);
+
+            if(line != null)
+                v = Integer.parseInt(line);
+
+            graph = new int[v][v];
+
+            for(int i = 0; i < 3; i++)
+                br.readLine();
+
+            int count = 0;
+
+            for(int i = 0; i < v;){
+
+                line = br.readLine();
+                String[] str = line.trim().split("\\s+");
+
+                for(int j = 0; j < str.length; j++)
+                {
+                    graph[i][count] = Integer.parseInt(str[j]);
+                    count++;
+
+                    if(count == v){
+                        i++;
+                        count = 0;
+                    }
+
                 }
 
             }

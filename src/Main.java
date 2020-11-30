@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 public class Main {
 
     public static void main(String [] args){
@@ -14,10 +10,13 @@ public class Main {
         int [][] graph = data.getGraph();
         int numberOfVertex = data.getV();
 
-        sw.setNumberOfVertex(numberOfVertex);
+        /*sw.setNumberOfVertex(numberOfVertex);
         for(int i = 0; i < 50; i++) {
             sw.algorithm(graph, 0, 0, 100);
-        }
+        }*/
+
+        data.readData2("rbg403.atsp");
+        data.printData();
 
     }
 
