@@ -71,6 +71,7 @@ public class SymulowaneWyzarzanie {
 
         for(int i = 0; i < 10; i++){
 
+            route = shuffleArray(route);
             int actualCost = getRouteCost(graph, route);
 
             if(actualCost < minCost){
@@ -79,8 +80,6 @@ public class SymulowaneWyzarzanie {
                 minRoute = route.clone();
 
             }
-
-            route = shuffleArray(route);
 
         }
 
@@ -257,9 +256,9 @@ public class SymulowaneWyzarzanie {
 
         int minCost = Integer.MAX_VALUE;
         int actualCost;
-        double startTemp = getNumberOfVertex() * 20;
+        double startTemp = 10000;
         double finishTemp = 0.0001;
-        double scale = 0.96;
+        double scale = 0.99;
 
         minRoute = dataInitialization(graph, minRoute, minCost);
         minCost = getRouteCost(graph, minRoute);
@@ -268,10 +267,12 @@ public class SymulowaneWyzarzanie {
         int [] resultRoute = minRoute.clone();
         int [] route = minRoute.clone();
 
-        long finishTime = System.currentTimeMillis() + 10 * 1000;
+        long finishTime = System.currentTimeMillis() + 5 * 60 * 1000;
         boolean test = true;
 
-        while(startTemp > finishTemp && test){
+        while(test && startTemp >= finishTemp){
+
+            route = resultRoute.clone();
 
             for(int k = 0; k < iterationsLimit; k++) {
 

@@ -5,18 +5,14 @@ public class Main {
         SymulowaneWyzarzanie sw = new SymulowaneWyzarzanie();
         Data data = new Data();
 
-        data.readData("test10");
+        //data.readData2("ftv47.atsp");
+        //data.readData("test15");
 
         int [][] graph = data.getGraph();
         int numberOfVertex = data.getV();
 
-        /*sw.setNumberOfVertex(numberOfVertex);
-        for(int i = 0; i < 50; i++) {
-            sw.algorithm(graph, 0, 0, 100);
-        }*/
-
-        data.readData2("rbg403.atsp");
-        data.printData();
+        sw.setNumberOfVertex(numberOfVertex);
+        sw.algorithm(graph, 2, 2, 100);
 
     }
 
