@@ -256,9 +256,9 @@ public class SymulowaneWyzarzanie {
 
         int minCost = Integer.MAX_VALUE;
         int actualCost;
-        double startTemp = 10000;
-        double finishTemp = 0.0001;
-        double scale = 0.99;
+        double startTemp = 1;
+        double finishTemp = 0.001;
+        double scale = 0.96;
 
         minRoute = dataInitialization(graph, minRoute, minCost);
         minCost = getRouteCost(graph, minRoute);
@@ -267,10 +267,10 @@ public class SymulowaneWyzarzanie {
         int [] resultRoute = minRoute.clone();
         int [] route = minRoute.clone();
 
-        long finishTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        long finishTime = System.currentTimeMillis() + 10 * 1000;
         boolean test = true;
 
-        while(test && startTemp >= finishTemp){
+        while(test){
 
             route = resultRoute.clone();
 

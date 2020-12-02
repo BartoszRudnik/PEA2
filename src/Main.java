@@ -5,7 +5,7 @@ public class Main {
         SymulowaneWyzarzanie sw = new SymulowaneWyzarzanie();
         Data data = new Data();
 
-        data.readData2("ftv47.atsp");
+        data.readData2("ftv33.atsp");
         //data.readData("test17");
 
         int [][] graph = data.getGraph();
