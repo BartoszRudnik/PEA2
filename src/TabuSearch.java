@@ -67,6 +67,12 @@ public class TabuSearch {
 
     }
 
+    private boolean aspiracjaParametr(int actualCost, double parametr, int minCost){
+
+        return actualCost * parametr < minCost;
+
+    }
+
     private List<TabuList> odejmijKadencje(List<TabuList> listaTabu){
 
         for(TabuList tmp : listaTabu){
@@ -88,7 +94,7 @@ public class TabuSearch {
 
     }
 
-    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption, int kryteriumDywersyfikacji){
+    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption, int kryteriumDywersyfikacji, int kryteriumAspiracji){
 
         Random random = new Random();
 
@@ -107,8 +113,10 @@ public class TabuSearch {
 
             route = pomoc.shuffleArray(route);
             int forCost = Integer.MAX_VALUE;
+            int lastCost = Integer.MAX_VALUE;
             int dywersyfikacja = 0;
             int [] forRoute = new int[numberOfVertex + 1];
+            boolean aspiracja = false;
 
             for (int i = 0; i < liczbaIteracji; i++) {
 
@@ -136,6 +144,13 @@ public class TabuSearch {
 
                 actualCost = pomoc.getRouteCost(graph, route);
 
+                if(kryteriumAspiracji == 0)
+                    aspiracja = aspiracjaMin(forCost, actualCost);
+                if(kryteriumAspiracji == 1)
+                    aspiracja = aspiracjaParametr(actualCost, 0.9, forCost);
+                if(kryteriumAspiracji == 2)
+                    aspiracja = aspiracjaOstatni(lastCost, actualCost);
+
                 if(!sprawdzListeTabu(route, listaTabu)){
 
                     if(forCost > actualCost){
@@ -153,7 +168,7 @@ public class TabuSearch {
                     listaTabu.add(noweTabu);
 
                 }
-                else if(sprawdzListeTabu(route, listaTabu) && aspiracjaMin(forCost, actualCost)){
+                else if(sprawdzListeTabu(route, listaTabu) && aspiracja){
 
                     forCost = actualCost;
                     forRoute = route.clone();
@@ -174,6 +189,8 @@ public class TabuSearch {
 
                 listaTabu = odejmijKadencje(listaTabu);
                 listaTabu = czyscTabu(listaTabu);
+
+                lastCost = actualCost;
 
                 if(dywersyfikacja >= kryteriumDywersyfikacji)
                     break;
