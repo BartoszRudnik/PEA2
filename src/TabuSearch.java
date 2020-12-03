@@ -88,7 +88,7 @@ public class TabuSearch {
 
     }
 
-    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption){
+    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption, int kryteriumDywersyfikacji){
 
         Random random = new Random();
 
@@ -101,12 +101,13 @@ public class TabuSearch {
         minCost = pomoc.getRouteCost(graph, minRoute);
         route = minRoute.clone();
 
-        long finishTime = System.currentTimeMillis() + 7 * 1000;
+        long finishTime = System.currentTimeMillis() + 10 * 1000;
 
         while(finishTime >= System.currentTimeMillis()) {
 
             route = pomoc.shuffleArray(route);
             int forCost = Integer.MAX_VALUE;
+            int dywersyfikacja = 0;
             int [] forRoute = new int[numberOfVertex + 1];
 
             for (int i = 0; i < liczbaIteracji; i++) {
@@ -142,7 +143,11 @@ public class TabuSearch {
                         forCost = actualCost;
                         forRoute = route.clone();
 
+                        dywersyfikacja = 0;
+
                     }
+                    else
+                        dywersyfikacja++;
 
                     TabuList noweTabu = new TabuList(route, getKadencja());
                     listaTabu.add(noweTabu);
@@ -153,10 +158,14 @@ public class TabuSearch {
                     forCost = actualCost;
                     forRoute = route.clone();
 
+                    dywersyfikacja = 0;
+
                     TabuList noweTabu = new TabuList(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }else{
+
+                    dywersyfikacja++;
 
                     TabuList noweTabu = new TabuList(route, getKadencja());
                     listaTabu.add(noweTabu);
@@ -165,6 +174,9 @@ public class TabuSearch {
 
                 listaTabu = odejmijKadencje(listaTabu);
                 listaTabu = czyscTabu(listaTabu);
+
+                if(dywersyfikacja >= kryteriumDywersyfikacji)
+                    break;
 
             }
 
