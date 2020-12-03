@@ -1,0 +1,185 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+public class TabuSearch {
+
+    private int numberOfVertex;
+    private int kadencja;
+    private List<TabuList> tabuList = new ArrayList<>();
+    private final FunkcjePomocnicze pomoc = new FunkcjePomocnicze();
+
+    public int getNumberOfVertex() {
+        return numberOfVertex;
+    }
+
+    public void setNumberOfVertex(int numberOfVertex) {
+        this.numberOfVertex = numberOfVertex;
+    }
+
+    public int getKadencja() {
+        return kadencja;
+    }
+
+    public void setKadencja(int kadencja) {
+        this.kadencja = kadencja;
+    }
+
+    public List<TabuList> getTabuList() {
+        return tabuList;
+    }
+
+    public void setTabuList(List<TabuList> tabuList) {
+        this.tabuList = tabuList;
+    }
+
+    public TabuSearch(int numberOfVertex){
+
+        this.numberOfVertex = numberOfVertex;
+        this.kadencja = (int) Math.sqrt(numberOfVertex) / 2 + 1;
+        pomoc.setNumberOfVertex(numberOfVertex);
+
+    }
+
+    private boolean sprawdzListeTabu(int [] route, List<TabuList> tabuList){
+
+        for(TabuList tabu : tabuList){
+
+            if(Arrays.equals(route, tabu.getRoute()))
+                return true;
+
+        }
+
+        return false;
+
+    }
+
+    private boolean aspiracjaMin(int minCost, int actualCost){
+
+        return actualCost < minCost;
+
+    }
+
+    private boolean aspiracjaOstatni(int lastCost, int actualCost){
+
+        return actualCost < lastCost;
+
+    }
+
+    private List<TabuList> odejmijKadencje(List<TabuList> listaTabu){
+
+        for(TabuList tmp : listaTabu){
+
+            int nowaKadencja = tmp.getKadencja() - 1;
+            tmp.setKadencja(nowaKadencja);
+
+        }
+
+        return  listaTabu;
+
+    }
+
+    private List<TabuList> czyscTabu(List<TabuList> listaTabu){
+
+        listaTabu.removeIf(tmp -> tmp.getKadencja() == 0);
+
+        return  listaTabu;
+
+    }
+
+    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption){
+
+        Random random = new Random();
+
+        int minCost = Integer.MAX_VALUE;
+        int actualCost;
+        int [] minRoute = new int[numberOfVertex + 1];
+        int [] route;
+
+        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minCost = pomoc.getRouteCost(graph, minRoute);
+        route = minRoute.clone();
+
+        long finishTime = System.currentTimeMillis() + 7 * 1000;
+
+        while(finishTime >= System.currentTimeMillis()) {
+
+            route = pomoc.shuffleArray(route);
+            int forCost = Integer.MAX_VALUE;
+            int [] forRoute = new int[numberOfVertex + 1];
+
+            for (int i = 0; i < liczbaIteracji; i++) {
+
+                int a = 1;
+                int b = 1;
+
+                while (a == b) {
+
+                    a = random.nextInt((numberOfVertex));
+                    b = random.nextInt((numberOfVertex));
+
+                    if (a == 0)
+                        a++;
+                    if (b == 0)
+                        b++;
+
+                }
+
+                if(routeOption == 0)
+                    route = pomoc.swapRoute(route, a, b);
+                if(routeOption == 1)
+                    route = pomoc.reverseRoute(route, a, b);
+                if(routeOption == 2)
+                    route = pomoc.insertRoute(route, a, b);
+
+                actualCost = pomoc.getRouteCost(graph, route);
+
+                if(!sprawdzListeTabu(route, listaTabu)){
+
+                    if(forCost > actualCost){
+
+                        forCost = actualCost;
+                        forRoute = route.clone();
+
+                    }
+
+                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    listaTabu.add(noweTabu);
+
+                }
+                else if(sprawdzListeTabu(route, listaTabu) && aspiracjaMin(forCost, actualCost)){
+
+                    forCost = actualCost;
+                    forRoute = route.clone();
+
+                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    listaTabu.add(noweTabu);
+
+                }else{
+
+                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    listaTabu.add(noweTabu);
+
+                }
+
+                listaTabu = odejmijKadencje(listaTabu);
+                listaTabu = czyscTabu(listaTabu);
+
+            }
+
+            if(forCost < minCost){
+
+                minCost = forCost;
+                minRoute = forRoute.clone();
+
+            }
+
+        }
+
+        pomoc.getResultRoute(minRoute);
+        System.out.println(minCost);
+
+    }
+
+}
