@@ -115,7 +115,7 @@ public class TestUi {
                         scanner.nextLine();
                         wsp = scanner.nextDouble();
 
-                        if(wsp <= 0 || wsp >=1) {
+                        if(wsp <= 0.0 || wsp >= 1.0) {
                             wsp = 0.99;
                             throw new Exception();
                         }
@@ -157,10 +157,25 @@ public class TestUi {
 
                 case 8:
                     System.out.println("Biezace parametry");
-                    System.out.println("Czas trwania algorytmu: " + sec);
-                    System.out.println("Rodzaj sasiedztwa: " + sas);
-                    System.out.println("Wspolczynik zmiany temperatury:" + wsp);
-                    System.out.println("Schemat schladzania: " + sch);
+                    System.out.println("_____________________________");
+                    System.out.println("Czas trwania algorytmu[s]: " + sec);
+
+                    if(sas == 0)
+                        System.out.println("Rodzaj sasiedztwa: Swap");
+                    else if(sas == 1)
+                        System.out.println("Rodzaj sasiedztwa: Reverse");
+                    else if(sas == 2)
+                        System.out.println("Rodzaj sasiedztwa: Insert");
+
+                    System.out.println("Wspolczynik zmiany temperatury: " + wsp);
+
+                    if(sch == 0)
+                        System.out.println("Schemat schladzania: geometryczny");
+                    else if(sch == 1)
+                        System.out.println("Schemat schladzania: liniowy");
+                    else if(sch == 2)
+                        System.out.println("Schemat schladzania: logarytmiczny");
+                    System.out.println("_____________________________");
 
                     break;
 
