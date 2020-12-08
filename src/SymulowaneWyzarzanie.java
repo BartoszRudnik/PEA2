@@ -20,7 +20,7 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    public void algorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit, double scale){
+    public void algorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit, double scale, int seconds){
 
         Random random = new Random();
 
@@ -38,7 +38,7 @@ public class SymulowaneWyzarzanie {
         int [] resultRoute = minRoute.clone();
         int [] route = minRoute.clone();
 
-        long finishTime = System.currentTimeMillis() + 10 * 1000;
+        long finishTime = System.currentTimeMillis() + seconds * 1000;
         boolean test = true;
 
         while(test){
@@ -124,6 +124,124 @@ public class SymulowaneWyzarzanie {
         pomoc.getResultRoute(resultRoute);
 
         System.out.println(pomoc.getRouteCost(graph, resultRoute));
+
+    }
+
+    public long [] measureAlgorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit, double scale, int seconds){
+
+        Random random = new Random();
+
+        int [] minRoute = new int[numberOfVertex + 1];
+
+        int minCost = Integer.MAX_VALUE;
+        int actualCost;
+        double startTemp = 1;
+        double finishTemp = 0.001;
+
+        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minCost = pomoc.getRouteCost(graph, minRoute);
+
+        int resultCost = minCost;
+        int [] resultRoute = minRoute.clone();
+        int [] route = minRoute.clone();
+
+        long finishTime = System.currentTimeMillis() + seconds * 1000;
+        long startTime = System.currentTimeMillis();
+        long actualTime = 0;
+        long solutionTime = 0;
+
+        boolean test = true;
+
+        while(test){
+
+            route = resultRoute.clone();
+
+            for(int k = 0; k < iterationsLimit; k++) {
+
+                int i = 1;
+                int j = 1;
+                double moveTest = random.nextDouble();
+
+                while (i == j) {
+
+                    i = random.nextInt((numberOfVertex));
+                    j = random.nextInt((numberOfVertex));
+
+                    if (i == 0)
+                        i++;
+                    if (j == 0)
+                        j++;
+
+                }
+
+                if (routeOption == 0)
+                    route = pomoc.swapRoute(route, i, j);
+                else if (routeOption == 1)
+                    route = pomoc.reverseRoute(route, i, j);
+                else if (routeOption == 2)
+                    route = pomoc.insertRoute(route, i, j);
+
+                actualCost = pomoc.getRouteCost(graph, route);
+
+                if (actualCost - minCost <= 0) {
+
+                    minCost = actualCost;
+                    minRoute = route.clone();
+                    actualTime = System.currentTimeMillis();
+
+                    if(minCost < resultCost){
+
+                        resultCost = minCost;
+                        resultRoute = minRoute.clone();
+                        solutionTime = actualTime;
+
+                    }
+
+                } else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
+
+                    minCost = actualCost;
+                    minRoute = route.clone();
+                    actualTime = System.currentTimeMillis();
+
+                    if(minCost < resultCost){
+
+                        resultCost = minCost;
+                        resultRoute = minRoute.clone();
+                        solutionTime = actualTime;
+
+                    }
+
+                }
+
+            }
+
+            if(coolingOption == 0){
+
+                startTemp = pomoc.geometricCooling(startTemp, scale);
+
+            }
+            else if(coolingOption == 1){
+
+                startTemp = pomoc.linearCooling(startTemp, scale);
+
+            }
+            else if(coolingOption == 2){
+
+                startTemp = pomoc.logarithmicCooling(startTemp, scale);
+
+            }
+
+            if (System.currentTimeMillis() > finishTime)
+                test = false;
+
+        }
+
+        long [] array = new long[2];
+
+        array[0] = pomoc.getRouteCost(graph, resultRoute);
+        array[1] = (solutionTime - startTime) / 1000;
+
+        return  array;
 
     }
 

@@ -6,12 +6,15 @@ public class TestUi {
 
     private final Data data = new Data();
 
-    private int[][] graph;
+    private int [][] graph;
     private int numberOfVertex;
-    private int sec = 5;
-    private int sas = 0;
-    private int sch = 0;
-    private double wsp = 0.99;
+    private int liczbaSekund = 5;
+    private int rodzajSasiedztwa = 0;
+    private int schematSchladzania = 0;
+    private int kryteriumAspiracji = 0;
+    private int strategiaDywersyfikacji = 5;
+    private int liczbaIteracji = 10;
+    private double zmianaTemperatury = 0.99;
 
     private boolean spr = true;
 
@@ -30,6 +33,9 @@ public class TestUi {
             System.out.println("6. Algorytm SW");
             System.out.println("7. Wybierz schemat schladzania");
             System.out.println("8. Wyswietl ustawione parametry");
+            System.out.println("9. Wybierz kryterium aspiracji");
+            System.out.println("10. Ustal strategie dywersyfikacji");
+            System.out.println("11. Ustal liczbe iteracji");
             System.out.println("0. Wyjdz");
 
             int nrAlg = scanner.nextInt();
@@ -59,10 +65,10 @@ public class TestUi {
                     try {
 
                         scanner.nextLine();
-                        sec = scanner.nextInt();
+                        liczbaSekund = scanner.nextInt();
 
-                        if(sec <= 0) {
-                            sec = 5;
+                        if(liczbaSekund <= 0) {
+                            liczbaSekund = 5;
                             throw new Exception();
                         }
 
@@ -85,10 +91,10 @@ public class TestUi {
                     try{
 
                         scanner.nextLine();
-                        sas = scanner.nextInt();
+                        rodzajSasiedztwa = scanner.nextInt();
 
-                        if(sas < 0 || sas > 2){
-                            sas = 0;
+                        if(rodzajSasiedztwa < 0 || rodzajSasiedztwa > 2){
+                            rodzajSasiedztwa = 0;
                             throw new Exception();
                         }
 
@@ -100,10 +106,9 @@ public class TestUi {
                     break;
 
                 case 4:
-                    List<TabuList> listaTabu = new ArrayList<>();
                     TabuSearch ts = new TabuSearch(numberOfVertex);
 
-                    ts.algorithm(graph, numberOfVertex, listaTabu, sas, 5, 2, sec);
+                    ts.algorithm(graph, liczbaIteracji, rodzajSasiedztwa, strategiaDywersyfikacji, kryteriumAspiracji, liczbaSekund);
 
                     break;
 
@@ -113,10 +118,10 @@ public class TestUi {
                     try{
 
                         scanner.nextLine();
-                        wsp = scanner.nextDouble();
+                        zmianaTemperatury = scanner.nextDouble();
 
-                        if(wsp <= 0.0 || wsp >= 1.0) {
-                            wsp = 0.99;
+                        if(zmianaTemperatury <= 0.0 || zmianaTemperatury >= 1.0) {
+                            zmianaTemperatury = 0.99;
                             throw new Exception();
                         }
 
@@ -129,7 +134,7 @@ public class TestUi {
                 case 6:
                     SymulowaneWyzarzanie sw = new SymulowaneWyzarzanie(numberOfVertex);
 
-                    sw.algorithm(graph, sas, 0, 10, wsp);
+                    sw.algorithm(graph, rodzajSasiedztwa, schematSchladzania, liczbaIteracji, zmianaTemperatury, liczbaSekund);
 
                     break;
 
@@ -144,10 +149,10 @@ public class TestUi {
                     try{
 
                         scanner.nextLine();
-                        sch = scanner.nextInt();
+                        schematSchladzania = scanner.nextInt();
 
-                        if(sch < 0 || sch > 2){
-                            sch = 0;
+                        if(schematSchladzania < 0 || schematSchladzania > 2){
+                            schematSchladzania = 0;
                             throw new Exception();
                         }
 
@@ -158,26 +163,96 @@ public class TestUi {
                 case 8:
                     System.out.println("Biezace parametry");
                     System.out.println("_____________________________");
-                    System.out.println("Czas trwania algorytmu[s]: " + sec);
+                    System.out.println("Czas trwania algorytmu[s]: " + liczbaSekund);
 
-                    if(sas == 0)
+                    if(rodzajSasiedztwa == 0)
                         System.out.println("Rodzaj sasiedztwa: Swap");
-                    else if(sas == 1)
+                    else if(rodzajSasiedztwa == 1)
                         System.out.println("Rodzaj sasiedztwa: Reverse");
-                    else if(sas == 2)
+                    else if(rodzajSasiedztwa == 2)
                         System.out.println("Rodzaj sasiedztwa: Insert");
 
-                    System.out.println("Wspolczynik zmiany temperatury: " + wsp);
+                    System.out.println("Wspolczynik zmiany temperatury: " + zmianaTemperatury);
 
-                    if(sch == 0)
+                    if(schematSchladzania == 0)
                         System.out.println("Schemat schladzania: geometryczny");
-                    else if(sch == 1)
+                    else if(schematSchladzania == 1)
                         System.out.println("Schemat schladzania: liniowy");
-                    else if(sch == 2)
+                    else if(schematSchladzania == 2)
                         System.out.println("Schemat schladzania: logarytmiczny");
+
+                    if(kryteriumAspiracji == 0)
+                        System.out.println("Kryterium aspiracji: najmniejsza wartosc");
+                    else if(kryteriumAspiracji == 1)
+                        System.out.println("Kryterium aspiracji: najmniejsza wartosc przemnozona przez parametr");
+                    else if(kryteriumAspiracji == 2)
+                        System.out.println("Kryterium aspiracji: ostatnia wartosc");
+
+                    System.out.println("Po ilu iteracjach bez poprawy wygenerowac nowe rozwiazanie startowe: " + strategiaDywersyfikacji);
+                    System.out.println("Liczba iteracji: " + liczbaIteracji);
+
                     System.out.println("_____________________________");
 
                     break;
+
+                case 9:
+                    System.out.println("Wybierz kryterium aspiracji");
+                    System.out.println("0. Najmniejsza wartosc");
+                    System.out.println("1. Najmniejsza wartosc przemnozona przez parametr");
+                    System.out.println("2. Ostatnia wartosc");
+
+                    try {
+                        scanner.nextLine();
+                        kryteriumAspiracji = scanner.nextInt();
+
+                        if(kryteriumAspiracji < 0 || kryteriumAspiracji > 2){
+                            kryteriumAspiracji = 0;
+                            throw new Exception();
+                        }
+
+                    } catch (Exception ex){
+                        System.out.println("Wybrano zly numer");
+                    }
+
+                    break;
+
+                case 10:
+                    System.out.println("Podaj po ilu iteracjach bez poprawy wygenerowac nowe rozwiazanie startowe");
+
+                    try{
+
+                        scanner.nextLine();
+                        strategiaDywersyfikacji = scanner.nextInt();
+
+                        if(strategiaDywersyfikacji <= 0 || strategiaDywersyfikacji > liczbaIteracji){
+
+                            strategiaDywersyfikacji = 5;
+                            throw new Exception();
+
+                        }
+
+                    }catch (Exception ex){
+                        System.out.println("Podano zla wartosc");
+                    }
+
+                case 11:
+                    System.out.println("Podaj liczbe iteracji");
+
+                    try {
+
+                        scanner.nextLine();
+                        liczbaIteracji = scanner.nextInt();
+
+                        if(liczbaIteracji <= 0){
+
+                            liczbaIteracji = 10;
+                            throw new Exception();
+
+                        }
+
+                    }catch (Exception e){
+                        System.out.println("Podano zla wartosc");
+                    }
 
             }
 

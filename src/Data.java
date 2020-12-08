@@ -36,6 +36,29 @@ public class Data {
 
     }
 
+    public void saveResultEtap2(String fileName, long tab[]){
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName,true));
+
+            for(int j = 0; j < 20; j++) {
+
+                if(j % 2 == 0)
+                    bw.newLine();
+
+                bw.write(tab[j] + " ");
+
+            }
+
+            bw.close();
+
+        } catch (IOException e) {
+            e.getMessage();
+        }
+
+    }
+
     public void printData(){
 
         if(graph != null){
