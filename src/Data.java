@@ -14,15 +14,15 @@ public class Data {
         return this.v;
     }
 
-    public void saveResult(String fileName, long tab[]){
+    public void saveResult(String fileName, long[] tab){
 
         try{
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName,true));
 
-            for(int i = 0; i < tab.length; i++){
+            for (long l : tab) {
 
-                bw.write(Long.toString(tab[i]));
+                bw.write(Long.toString(l));
                 bw.newLine();
 
             }
@@ -36,7 +36,7 @@ public class Data {
 
     }
 
-    public void saveResultEtap2(String fileName, long tab[]){
+    public void saveResultEtap2(String fileName, long[] tab){
 
         try{
 
@@ -134,7 +134,7 @@ public class Data {
 
                 if( i == j)
                     graph[i][j] = -1;
-                else if(paths[i][j] == false){
+                else if(!paths[i][j]){
 
                     int tmp = rand.nextInt(100);
 
@@ -188,7 +188,7 @@ public class Data {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
 
-            String line = new String();
+            String line = "";
 
             for(int i = 0; i < 4; i++)
                 line = br.readLine();
@@ -210,12 +210,11 @@ public class Data {
                 line = br.readLine();
                 String[] str = line.trim().split("\\s+");
 
-                for(int j = 0; j < str.length; j++)
-                {
-                    graph[i][count] = Integer.parseInt(str[j]);
+                for (String s : str) {
+                    graph[i][count] = Integer.parseInt(s);
                     count++;
 
-                    if(count == v){
+                    if (count == v) {
                         i++;
                         count = 0;
                     }
