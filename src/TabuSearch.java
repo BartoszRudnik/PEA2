@@ -113,7 +113,7 @@ public class TabuSearch {
 
         while(finishTime >= System.currentTimeMillis()) {
 
-            route = pomoc.shuffleArray(route);
+            route = minRoute.clone();
             int forCost = Integer.MAX_VALUE;
             int lastCost = Integer.MAX_VALUE;
             int dywersyfikacja = 0;
@@ -194,8 +194,9 @@ public class TabuSearch {
 
                 lastCost = actualCost;
 
-                if(dywersyfikacja >= kryteriumDywersyfikacji)
+                if(dywersyfikacja >= kryteriumDywersyfikacji) {
                     break;
+                }
 
             }
 
@@ -235,7 +236,7 @@ public class TabuSearch {
 
         while(finishTime >= System.currentTimeMillis()) {
 
-            route = pomoc.shuffleArray(route);
+            route = minRoute.clone();
             int forCost = Integer.MAX_VALUE;
             int lastCost = Integer.MAX_VALUE;
             int dywersyfikacja = 0;

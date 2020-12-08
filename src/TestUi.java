@@ -10,7 +10,7 @@ public class TestUi {
     private int rodzajSasiedztwa = 0;
     private int schematSchladzania = 0;
     private int kryteriumAspiracji = 0;
-    private int strategiaDywersyfikacji = 5;
+    private int limitIteracji = 5;
     private int liczbaIteracji = 10;
     private double zmianaTemperatury = 0.99;
 
@@ -32,7 +32,7 @@ public class TestUi {
             System.out.println("7. Wybierz schemat schladzania");
             System.out.println("8. Wyswietl ustawione parametry");
             System.out.println("9. Wybierz kryterium aspiracji");
-            System.out.println("10. Ustal strategie dywersyfikacji");
+            System.out.println("10. Ustal limit iteracji bez poprawy");
             System.out.println("11. Ustal liczbe iteracji");
             System.out.println("0. Wyjdz");
 
@@ -106,7 +106,7 @@ public class TestUi {
                 case 4:
                     TabuSearch ts = new TabuSearch(numberOfVertex);
 
-                    ts.algorithm(graph, liczbaIteracji, rodzajSasiedztwa, strategiaDywersyfikacji, kryteriumAspiracji, liczbaSekund);
+                    ts.algorithm(graph, liczbaIteracji, rodzajSasiedztwa, limitIteracji, kryteriumAspiracji, liczbaSekund);
 
                     break;
 
@@ -186,7 +186,7 @@ public class TestUi {
                     else if(kryteriumAspiracji == 2)
                         System.out.println("Kryterium aspiracji: ostatnia wartosc");
 
-                    System.out.println("Po ilu iteracjach bez poprawy wygenerowac nowe rozwiazanie startowe: " + strategiaDywersyfikacji);
+                    System.out.println("Liczba iteracji bez poprawy, po ktoryc zostanie wygenerowane nowe rozwiazanie startowe: " + limitIteracji);
                     System.out.println("Liczba iteracji: " + liczbaIteracji);
 
                     System.out.println("_____________________________");
@@ -220,11 +220,11 @@ public class TestUi {
                     try{
 
                         scanner.nextLine();
-                        strategiaDywersyfikacji = scanner.nextInt();
+                        limitIteracji = scanner.nextInt();
 
-                        if(strategiaDywersyfikacji <= 0 || strategiaDywersyfikacji > liczbaIteracji){
+                        if(limitIteracji <= 0 || limitIteracji > liczbaIteracji){
 
-                            strategiaDywersyfikacji = 5;
+                            limitIteracji = 5;
                             throw new Exception();
 
                         }
