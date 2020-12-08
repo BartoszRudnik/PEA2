@@ -20,7 +20,7 @@ public class SymulowaneWyzarzanie {
 
     }
 
-    public void algorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit){
+    public void algorithm(int [][] graph, int routeOption, int coolingOption, int iterationsLimit, double scale){
 
         Random random = new Random();
 
@@ -30,7 +30,6 @@ public class SymulowaneWyzarzanie {
         int actualCost;
         double startTemp = 1;
         double finishTemp = 0.001;
-        double scale = 0.96;
 
         minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
         minCost = pomoc.getRouteCost(graph, minRoute);

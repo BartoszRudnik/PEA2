@@ -94,7 +94,7 @@ public class TabuSearch {
 
     }
 
-    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption, int kryteriumDywersyfikacji, int kryteriumAspiracji){
+    public void algorithm(int [][] graph, int liczbaIteracji, List<TabuList> listaTabu, int routeOption, int kryteriumDywersyfikacji, int kryteriumAspiracji, int liczbaSekund){
 
         Random random = new Random();
 
@@ -107,7 +107,7 @@ public class TabuSearch {
         minCost = pomoc.getRouteCost(graph, minRoute);
         route = minRoute.clone();
 
-        long finishTime = System.currentTimeMillis() + 10 * 1000;
+        long finishTime = System.currentTimeMillis() + liczbaSekund * 1000;
 
         while(finishTime >= System.currentTimeMillis()) {
 

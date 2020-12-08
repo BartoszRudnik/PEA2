@@ -21,7 +21,7 @@ public class Main {
         //sw.algorithm(graph, 2, 2, numberOfVertex * numberOfVertex);
 
         ts = new TabuSearch(numberOfVertex);
-        ts.algorithm(graph, numberOfVertex, listaTabu,0, 5, 2);
+        ts.algorithm(graph, numberOfVertex, listaTabu,0, 5, 2, 10);
 
     }
 
