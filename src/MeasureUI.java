@@ -50,7 +50,7 @@ public class MeasureUI {
 
                     for(int i = 0; i < 10; i++){
 
-                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 0, 5, 0, 5);
+                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 0, 5, 0, 360);
 
                         resultArray[count] = tmpArray[0];
                         resultArray[count + 1] = tmpArray[1];
@@ -70,7 +70,7 @@ public class MeasureUI {
 
                     for(int i = 0; i < 10; i++){
 
-                        long [] tmpArray = sw.measureAlgorithm(graph, 0, 0, numberOfVertex, 0.96, 5);
+                        long [] tmpArray = sw.measureAlgorithm(graph, 0, 0, numberOfVertex, 0.96, 360);
 
                         resultArraySW[c] = tmpArray[0];
                         resultArraySW[c + 1] = tmpArray[1];

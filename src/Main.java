@@ -2,12 +2,9 @@ public class Main {
 
     public static void main(String [] args){
 
-       TestUi test = new TestUi();
-       test.show();
+        UI ui = new UI();
 
-        //MeasureUI measure = new MeasureUI();
-
-       // measure.show();
+        ui.showMenu();
 
     }
 

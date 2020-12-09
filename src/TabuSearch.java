@@ -334,6 +334,8 @@ public class TabuSearch {
 
         }
 
+        pomoc.getResultRoute(minRoute);
+
         long [] array = new long[2];
 
         array[0] = minCost;
