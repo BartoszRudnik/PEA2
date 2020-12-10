@@ -7,7 +7,7 @@ public class TabuSearch {
 
     private int numberOfVertex;
     private int kadencja;
-    private List<TabuList> tabuList = new ArrayList<>();
+    private List<TabuElement> tabuList = new ArrayList<>();
     private final FunkcjePomocnicze pomoc = new FunkcjePomocnicze();
 
     public int getNumberOfVertex() {
@@ -26,11 +26,11 @@ public class TabuSearch {
         this.kadencja = kadencja;
     }
 
-    public List<TabuList> getTabuList() {
+    public List<TabuElement> getTabuList() {
         return tabuList;
     }
 
-    public void setTabuList(List<TabuList> tabuList) {
+    public void setTabuList(List<TabuElement> tabuList) {
         this.tabuList = tabuList;
     }
 
@@ -42,9 +42,10 @@ public class TabuSearch {
 
     }
 
-    private boolean sprawdzListeTabu(int [] route, List<TabuList> tabuList){
+    //sprawdzenie czy zadana sciezka znajduje sie na liscie Tabu
+    private boolean sprawdzListeTabu(int [] route, List<TabuElement> tabuList){
 
-        for(TabuList tabu : tabuList){
+        for(TabuElement tabu : tabuList){
 
             if(Arrays.equals(route, tabu.getRoute()))
                 return true;
@@ -55,27 +56,31 @@ public class TabuSearch {
 
     }
 
+    //sprawdzenie czy zadany koszt jest mniejszy od dotychczas najmniejszego
     private boolean aspiracjaMin(int minCost, int actualCost){
 
         return actualCost < minCost;
 
     }
 
+    //sprawdzenie czy zadany koszt jest mniejszy niz poprzednio uzyskany koszt
     private boolean aspiracjaOstatni(int lastCost, int actualCost){
 
         return actualCost < lastCost;
 
     }
 
+    //sprawdzenie czy zadany koszt przemnozony przez parametr jest mniejszy od dotychczasowego najmniejszego kosztu
     private boolean aspiracjaParametr(int actualCost, double parametr, int minCost){
 
         return actualCost * parametr < minCost;
 
     }
 
-    private List<TabuList> odejmijKadencje(List<TabuList> listaTabu){
+    //obnizenie kadencji dla elementow znajdujacych sie na liscie tabu
+    private List<TabuElement> odejmijKadencje(List<TabuElement> listaTabu){
 
-        for(TabuList tmp : listaTabu){
+        for(TabuElement tmp : listaTabu){
 
             int nowaKadencja = tmp.getKadencja() - 1;
             tmp.setKadencja(nowaKadencja);
@@ -86,7 +91,8 @@ public class TabuSearch {
 
     }
 
-    private List<TabuList> czyscTabu(List<TabuList> listaTabu){
+    //usuniecie z listy tabu elementow, ktorych kadencja wynosi 0
+    private List<TabuElement> czyscTabu(List<TabuElement> listaTabu){
 
         listaTabu.removeIf(tmp -> tmp.getKadencja() == 0);
 
@@ -96,7 +102,7 @@ public class TabuSearch {
 
     public void algorithm(int [][] graph, int liczbaIteracji, int routeOption, int kryteriumDywersyfikacji, int kryteriumAspiracji, int liczbaSekund){
 
-        List<TabuList> listaTabu = new ArrayList<>();
+        List<TabuElement> listaTabu = new ArrayList<>();
 
         Random random = new Random();
 
@@ -105,12 +111,16 @@ public class TabuSearch {
         int [] minRoute = new int[numberOfVertex + 1];
         int [] route;
 
+        //wyznaczenie poczatkowej sciezki i kosztu jej przejscia
         minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
         minCost = pomoc.getRouteCost(graph, minRoute);
+
         route = minRoute.clone();
 
+        //wyznaczenie czasu trwania algorytmu
         long finishTime = System.currentTimeMillis() + liczbaSekund * 1000;
 
+        //dopoki czas nie zostanie przekroczony
         while(finishTime >= System.currentTimeMillis()) {
 
             route = minRoute.clone();
@@ -125,6 +135,7 @@ public class TabuSearch {
                 int a = 1;
                 int b = 1;
 
+                //wyznaczenie wierzcholkow na podstawie, ktorych zostanie przeksztalcona sciezka
                 while (a == b) {
 
                     a = random.nextInt((numberOfVertex));
@@ -137,6 +148,7 @@ public class TabuSearch {
 
                 }
 
+                //przeksztalcenie sciezki wedlug wybranego schematu
                 if(routeOption == 0)
                     route = pomoc.swapRoute(route, a, b);
                 if(routeOption == 1)
@@ -144,8 +156,10 @@ public class TabuSearch {
                 if(routeOption == 2)
                     route = pomoc.insertRoute(route, a, b);
 
+                //wyznaczenie kosztu przeksztalconej sciezki
                 actualCost = pomoc.getRouteCost(graph, route);
 
+                //sprawdzenie wybranego kryterium aspiracji
                 if(kryteriumAspiracji == 0)
                     aspiracja = aspiracjaMin(forCost, actualCost);
                 if(kryteriumAspiracji == 1)
@@ -153,8 +167,10 @@ public class TabuSearch {
                 if(kryteriumAspiracji == 2)
                     aspiracja = aspiracjaOstatni(lastCost, actualCost);
 
+                //jesli ruch nie jest na liscie tabu
                 if(!sprawdzListeTabu(route, listaTabu)){
 
+                    //sprawdzenie czy koszt aktualnej sciezki jest najmniejszy
                     if(forCost > actualCost){
 
                         forCost = actualCost;
@@ -163,13 +179,16 @@ public class TabuSearch {
                         dywersyfikacja = 0;
 
                     }
+                    //jesli nie jest zwiekszamy wartosc pola sprawdzajacego liczbe ruchow bez poprawy wyniku
                     else
                         dywersyfikacja++;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    //dodanie ruchu do listy tabu
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }
+                //jesli ruch jest na liscie tabu ale spelnia kryterium aspiracji
                 else if(sprawdzListeTabu(route, listaTabu) && aspiracja){
 
                     forCost = actualCost;
@@ -177,29 +196,33 @@ public class TabuSearch {
 
                     dywersyfikacja = 0;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
-                }else{
+                }// jesli ruch jest na liscie tabu i nie spelnia kryterium aspiracji
+                else{
 
                     dywersyfikacja++;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }
 
+                //zaktualizowanie kadencji elementow znajdujacych sie na liscie tabu i usniecie z listy elementow o kadencji rownej 0
                 listaTabu = odejmijKadencje(listaTabu);
                 listaTabu = czyscTabu(listaTabu);
 
                 lastCost = actualCost;
 
+                //sprawdzenie czy nie zostalo przekroczone kryterium dywersyfikacji
                 if(dywersyfikacja >= kryteriumDywersyfikacji) {
                     break;
                 }
 
             }
 
+            //zaktualizowanie najmniejszego kosztu przejscia i jego sciezki
             if(forCost < minCost){
 
                 minCost = forCost;
@@ -209,6 +232,7 @@ public class TabuSearch {
 
         }
 
+        //wypisanie wynikowej sciezki i jej kosztu przejscia
         pomoc.getResultRoute(minRoute);
         System.out.println(minCost);
 
@@ -216,7 +240,7 @@ public class TabuSearch {
 
     public long [] measureAlgorithm(int [][] graph, int liczbaIteracji, int routeOption, int kryteriumDywersyfikacji, int kryteriumAspiracji, int liczbaSekund){
 
-        List<TabuList> listaTabu = new ArrayList<>();
+        List<TabuElement> listaTabu = new ArrayList<>();
 
         Random random = new Random();
 
@@ -290,7 +314,7 @@ public class TabuSearch {
                     else
                         dywersyfikacja++;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }
@@ -302,14 +326,14 @@ public class TabuSearch {
 
                     dywersyfikacja = 0;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }else{
 
                     dywersyfikacja++;
 
-                    TabuList noweTabu = new TabuList(route, getKadencja());
+                    TabuElement noweTabu = new TabuElement(route, getKadencja());
                     listaTabu.add(noweTabu);
 
                 }

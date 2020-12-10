@@ -12,6 +12,7 @@ public class FunkcjePomocnicze {
         this.numberOfVertex = numberOfVertex;
     }
 
+    //funkcja zamieniajaca pozycje elementow znajdujacych sie w 'array'
     public int [] shuffleArray(int[] array)
     {
         int index, temp;
@@ -41,6 +42,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    // funkcja obliczajaca koszt przejscia przez zadana sciezke
     public int getRouteCost(int [][] graph, int [] route){
 
         int cost = 0;
@@ -55,6 +57,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    // funkcja inicjalizujaca wstepna sciezke do dalszych rozwiazan dla algorytmu TS i SA
     public int [] dataInitialization(int [][] graph, int [] route, int minCost){
 
         int [] minRoute = new int[numberOfVertex + 1];
@@ -69,6 +72,7 @@ public class FunkcjePomocnicze {
 
         }
 
+        //losowanych jest 10 przykladowych sciezek i wybierana jest z nich sciezke o najmniejszym koszcie przejscia
         for(int i = 0; i < 10; i++){
 
             route = shuffleArray(route);
@@ -83,10 +87,12 @@ public class FunkcjePomocnicze {
 
         }
 
+        // zwracana sciezka bedzie sciezka poczatkowa dla SA i TS
         return minRoute;
 
     }
 
+    //geometryczny ochladzania temperatury dla SA
     public double geometricCooling(double startTemp, double scale){
 
         startTemp *= scale;
@@ -95,6 +101,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    //liniowe ochladzanie temperatury dla SA
     public double linearCooling(double startTemp, double scale){
 
         startTemp -= scale;
@@ -103,6 +110,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    //logarytmiczne ochladzanie temperatury dla SA
     public double logarithmicCooling(double startTemp, double scale){
 
         startTemp /= (1 + scale / startTemp);
@@ -111,8 +119,10 @@ public class FunkcjePomocnicze {
 
     }
 
+    // odwrocenie kolejnosci wystepowania elementow w tablicy pomiedzy elementami o wartosci 'i' oraz 'j'
     public int [] reverseRoute(int [] route, int i, int j){
 
+        //wyznaczenie indeksow elementow o wartosci 'i' oraz 'j'
         int [] index = getIndex(route, i, j);
         int iIndex = index[0];
         int jIndex = index[1];
@@ -147,8 +157,10 @@ public class FunkcjePomocnicze {
 
     }
 
+    // zamiana miejscami w tablicy elementu o wartosci 'i' z elementem o wartosci 'j'
     public int [] swapRoute(int [] route, int i, int j){
 
+        // wyznaczenie indeksow elementow o wartosci 'i' oraz 'j'
         int [] index = getIndex(route, i, j);
         int iIndex = index[0];
         int jIndex = index[1];
@@ -162,12 +174,14 @@ public class FunkcjePomocnicze {
 
     }
 
+    // wstawienie wierzcholka 'i' na pozycje o indeksie 'j'
     public int [] insertRoute(int [] route, int i, int j){
 
         int indexI = 0;
         int tmp = 0;
         int [] tmpArray = new int[route.length];
 
+        // wyznaczenie indeksu elementu o wartosci 'i'
         for(int k = 1; k < route.length - 1; k++){
 
             if(route[k] == i){
@@ -179,6 +193,7 @@ public class FunkcjePomocnicze {
 
         }
 
+        // przesuniecie pozostalych elementow tablicy i wstawienie elementu o wartosci 'i' na pozycje 'j'
         if(indexI > j) {
 
             for (int k = j; k < route.length; k++) {
@@ -215,6 +230,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    //funkcja zwracajaca indeksy wartosci 'i' oraz 'j' w tabeli route
     private int [] getIndex(int [] route, int i, int j){
 
         int [] index = new int[2];
@@ -233,6 +249,7 @@ public class FunkcjePomocnicze {
 
     }
 
+    // funkcja wypisujaca kolejne wierzcholki znajdujace sie w sciezce
     public void getResultRoute(int [] route){
 
         for(int i = 0; i <= numberOfVertex; i++){

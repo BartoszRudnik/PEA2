@@ -1,4 +1,4 @@
-public class TabuList {
+public class TabuElement {
 
     private int [] route;
     private int kadencja;
@@ -19,14 +19,14 @@ public class TabuList {
         this.kadencja = kadencja;
     }
 
-    public TabuList(int [] route, int kadencja){
+    public TabuElement(int [] route, int kadencja){
 
         this.route = route;
         this.kadencja = kadencja;
 
     }
 
-    public TabuList(){
+    public TabuElement(){
 
     }
 

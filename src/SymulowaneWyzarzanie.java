@@ -28,9 +28,10 @@ public class SymulowaneWyzarzanie {
 
         int minCost = Integer.MAX_VALUE;
         int actualCost;
-        double startTemp = 1;
+        double startTemp = 1.0;
         double finishTemp = 0.001;
 
+        // wyznaczenie sciezki poczatkowej i kosztu przejscia tej sciezki
         minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
         minCost = pomoc.getRouteCost(graph, minRoute);
 
@@ -38,11 +39,14 @@ public class SymulowaneWyzarzanie {
         int [] resultRoute = minRoute.clone();
         int [] route = minRoute.clone();
 
+        //wyznaczenie czasu trwania algorytmu
         long finishTime = System.currentTimeMillis() + seconds * 1000;
         boolean test = true;
 
+        //dopóki nie został przekroczony czas trwania algorytmu
         while(test){
 
+            //sciezka, ktorej sasiedztwo bedzie badane
             route = resultRoute.clone();
 
             for(int k = 0; k < iterationsLimit; k++) {
@@ -51,6 +55,7 @@ public class SymulowaneWyzarzanie {
                 int j = 1;
                 double moveTest = random.nextDouble();
 
+                //wyznaczenie wierzcholkow na podstawie, ktorych zostanie przeksztalcona sciezka
                 while (i == j) {
 
                     i = random.nextInt((numberOfVertex));
@@ -63,6 +68,7 @@ public class SymulowaneWyzarzanie {
 
                 }
 
+                //przeksztalcenie sciezki w zaleznosci
                 if (routeOption == 0)
                     route = pomoc.swapRoute(route, i, j);
                 else if (routeOption == 1)
@@ -70,8 +76,10 @@ public class SymulowaneWyzarzanie {
                 else if (routeOption == 2)
                     route = pomoc.insertRoute(route, i, j);
 
+                //wyznaczenie kosztu przejscia aktualnie badanej sciezki
                 actualCost = pomoc.getRouteCost(graph, route);
 
+                //jesli koszt aktualnie badanej sciezki jest najmniejszy to jest przyjmowany jako aktualny wynik
                 if (actualCost - minCost <= 0) {
 
                     minCost = actualCost;
@@ -84,7 +92,8 @@ public class SymulowaneWyzarzanie {
 
                     }
 
-                } else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
+                }// uwzglednienie funkcji prawdopodobienstwa
+                else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
 
                     minCost = actualCost;
                     minRoute = route.clone();
@@ -100,6 +109,7 @@ public class SymulowaneWyzarzanie {
 
             }
 
+            //ochladzania temperatury wedlug wybranego schematu
             if(coolingOption == 0){
 
                 startTemp = pomoc.geometricCooling(startTemp, scale);
@@ -116,11 +126,13 @@ public class SymulowaneWyzarzanie {
 
             }
 
+            //sprawdzenie czy nie zostal przekroczony czas dzialania algorytmu
             if (System.currentTimeMillis() > finishTime)
                 test = false;
 
         }
 
+        //wypisanie najmniejszej wykrytej sciezki i kosztu jej przejscia
         pomoc.getResultRoute(resultRoute);
 
         System.out.println(pomoc.getRouteCost(graph, resultRoute));
@@ -222,7 +234,7 @@ public class SymulowaneWyzarzanie {
             }
             else if(coolingOption == 1){
 
-                startTemp = pomoc.linearCooling(startTemp, scale);
+                startTemp = pomoc.linearCooling(startTemp, 0.001);
 
             }
             else if(coolingOption == 2){
