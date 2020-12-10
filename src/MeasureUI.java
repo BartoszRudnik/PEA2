@@ -7,6 +7,7 @@ public class MeasureUI {
     private int [][] graph;
     private int numberOfVertex;
     private String fileName;
+    private int seconds = 10;
 
     private boolean spr = true;
 
@@ -20,6 +21,7 @@ public class MeasureUI {
             System.out.println("1. Wczytaj plik");
             System.out.println("2. Przeprowadz pomiary -> TabuSearch");
             System.out.println("3. Przeprowadz pomiary -> SymulowaneWyzarzanie");
+            System.out.println("4. Zmien czas wykonywania sie algorytmow");
             System.out.println("0. Wyjscie");
 
             int nr = scanner.nextInt();
@@ -50,7 +52,7 @@ public class MeasureUI {
 
                     for(int i = 0; i < 10; i++){
 
-                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 0, 5, 0, 360);
+                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 0, 5, 0, seconds);
 
                         resultArray[count] = tmpArray[0];
                         resultArray[count + 1] = tmpArray[1];
@@ -59,7 +61,7 @@ public class MeasureUI {
 
                     }
 
-                    data.saveResultEtap2(fileName + "TABU.txt", resultArray);
+                    data.saveResultEtap2(seconds + "sek_" + fileName + "TABU.txt", resultArray);
 
                     break;
 
@@ -70,7 +72,7 @@ public class MeasureUI {
 
                     for(int i = 0; i < 10; i++){
 
-                        long [] tmpArray = sw.measureAlgorithm(graph, 0, 0, numberOfVertex, 0.96, 360);
+                        long [] tmpArray = sw.measureAlgorithm(graph, 0, 0, numberOfVertex, 0.96, seconds);
 
                         resultArraySW[c] = tmpArray[0];
                         resultArraySW[c + 1] = tmpArray[1];
@@ -79,7 +81,26 @@ public class MeasureUI {
 
                     }
 
-                    data.saveResultEtap2(fileName + "Wyzarzanie.txt", resultArraySW);
+                    data.saveResultEtap2(seconds + "sek_" + fileName + "Wyzarzanie.txt", resultArraySW);
+
+                    break;
+
+                case 4:
+                    try {
+
+                        scanner.nextLine();
+                        seconds = scanner.nextInt();
+
+                        if(seconds <= 0) {
+                            seconds = 10;
+                            throw new Exception();
+                        }
+
+                    }catch (Exception ex){
+
+                        System.out.println("Podano bledna wartosc");
+
+                    }
 
                     break;
 
