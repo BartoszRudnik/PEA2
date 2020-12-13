@@ -53,7 +53,7 @@ public class MeasureUI {
 
                     for(int i = 0; i < 10; i++){
 
-                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 0, 5, 0, seconds);
+                        long [] tmpArray = ts.measureAlgorithm(graph, numberOfVertex, 1, 5, 0, seconds);
 
                         resultArray[count] = tmpArray[0];
                         resultArray[count + 1] = tmpArray[1];
@@ -62,7 +62,7 @@ public class MeasureUI {
 
                     }
 
-                    data.saveResultEtap2(seconds + "sek_" + fileName + "TABU.txt", resultArray);
+                    data.saveResultEtap2(seconds + "sek_" + fileName + "TABU222.txt", resultArray);
 
                     break;
 

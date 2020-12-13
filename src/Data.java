@@ -42,7 +42,7 @@ public class Data {
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName,true));
 
-            for(int j = 0; j < 20; j++) {
+            for(int j = 0; j < tab.length; j++) {
 
                 if(j % 2 == 0)
                     bw.newLine();

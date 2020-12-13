@@ -158,6 +158,8 @@ public class TestUi {
                         System.out.println("Wybrano zly schemat");
                     }
 
+                    break;
+
                 case 8:
                     System.out.println("Biezace parametry");
                     System.out.println("_____________________________");
@@ -233,6 +235,8 @@ public class TestUi {
                         System.out.println("Podano zla wartosc");
                     }
 
+                    break;
+
                 case 11:
                     System.out.println("Podaj liczbe iteracji");
 
@@ -251,6 +255,8 @@ public class TestUi {
                     }catch (Exception e){
                         System.out.println("Podano zla wartosc");
                     }
+
+                    break;
 
             }
 
