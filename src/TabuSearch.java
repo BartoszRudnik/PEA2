@@ -183,35 +183,36 @@ public class TabuSearch {
                     else
                         dywersyfikacja++;
 
-                    //dodanie ruchu do listy tabu
-                    TabuElement noweTabu = new TabuElement(route, getKadencja());
-                    listaTabu.add(noweTabu);
-
                 }
                 //jesli ruch jest na liscie tabu ale spelnia kryterium aspiracji
                 else if(sprawdzListeTabu(route, listaTabu) && aspiracja){
 
-                    forCost = actualCost;
-                    forRoute = route.clone();
+                    if(forCost > actualCost){
 
-                    dywersyfikacja = 0;
+                        forCost = actualCost;
+                        forRoute = route.clone();
 
-                    TabuElement noweTabu = new TabuElement(route, getKadencja());
-                    listaTabu.add(noweTabu);
+                        dywersyfikacja = 0;
+
+                    }
+                    //jesli nie jest zwiekszamy wartosc pola sprawdzajacego liczbe ruchow bez poprawy wyniku
+                    else
+                        dywersyfikacja++;
 
                 }// jesli ruch jest na liscie tabu i nie spelnia kryterium aspiracji
                 else{
 
                     dywersyfikacja++;
 
-                    TabuElement noweTabu = new TabuElement(route, getKadencja());
-                    listaTabu.add(noweTabu);
-
                 }
 
                 //zaktualizowanie kadencji elementow znajdujacych sie na liscie tabu i usniecie z listy elementow o kadencji rownej 0
                 listaTabu = odejmijKadencje(listaTabu);
                 listaTabu = czyscTabu(listaTabu);
+
+                //dodanie ruchu do listy tabu
+                TabuElement noweTabu = new TabuElement(route, getKadencja());
+                listaTabu.add(noweTabu);
 
                 lastCost = actualCost;
 
