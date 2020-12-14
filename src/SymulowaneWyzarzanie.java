@@ -136,7 +136,7 @@ public class SymulowaneWyzarzanie {
         pomoc.getResultRoute(resultRoute);
 
         System.out.println(resultCost);
-        System.out.println(pomoc.getRouteCost(graph, resultRoute));
+        //System.out.println(pomoc.getRouteCost(graph, resultRoute));
 
     }
 
