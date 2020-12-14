@@ -12,6 +12,54 @@ public class FunkcjePomocnicze {
         this.numberOfVertex = numberOfVertex;
     }
 
+    public int [] algorytmZachlanny(int [][] graph){
+
+        int [] route = new int[numberOfVertex + 1];
+        int [] resultRoute = new int[numberOfVertex + 1];
+        boolean check;
+        int oldBestIndex = 0;
+        int actualBestIndex = 0;
+
+        for(int i = 0; i < numberOfVertex; i++){
+
+            int bestCost = Integer.MAX_VALUE;
+            oldBestIndex = actualBestIndex;
+
+            for(int j = 0; j < numberOfVertex; j++){
+
+                check = true;
+
+                if(j != oldBestIndex){
+
+                    for(int g = 0; g <= i; g++){
+
+                        if(j == route[g]){
+                            check = false;
+                        }
+
+                    }
+                    if(graph[oldBestIndex][j] < bestCost && check == true){
+
+                        bestCost = graph[oldBestIndex][j];
+                        actualBestIndex = j;
+
+                    }
+
+                }
+
+            }
+
+            route[i] = actualBestIndex;
+            resultRoute[i] = oldBestIndex;
+
+        }
+
+        resultRoute[numberOfVertex] = 0;
+
+        return resultRoute;
+
+    }
+
     //funkcja zamieniajaca pozycje elementow znajdujacych sie w 'array'
     public int [] shuffleArray(int[] array)
     {
