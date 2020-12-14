@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 public class SymulowaneWyzarzanie {
 
@@ -24,20 +24,19 @@ public class SymulowaneWyzarzanie {
 
         Random random = new Random();
 
-        int [] minRoute = new int[numberOfVertex + 1];
+        int[] minRoute;
 
-        int minCost = Integer.MAX_VALUE;
+        int minCost;
         int actualCost;
-        double startTemp = 10 * numberOfVertex;
-        double finishTemp = 0.001;
+        double startTemp;
 
         // wyznaczenie sciezki poczatkowej i kosztu przejscia tej sciezki
         minRoute = pomoc.algorytmZachlanny(graph);
         minCost = pomoc.getRouteCost(graph, minRoute);
 
         int resultCost = minCost;
-        int [] resultRoute = minRoute.clone();
-        int [] route = minRoute.clone();
+        int[] resultRoute = minRoute.clone();
+        int[] route;
 
         //wyznaczenie czasu trwania algorytmu
         long finishTime = System.currentTimeMillis() + seconds * 1000;
@@ -96,6 +95,7 @@ public class SymulowaneWyzarzanie {
 
                 }// uwzglednienie funkcji prawdopodobienstwa
                 else {
+
                     if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
 
                         minCost = actualCost;
@@ -109,8 +109,6 @@ public class SymulowaneWyzarzanie {
                         }
 
                     }
-
-                    System.out.println(Math.exp((actualCost - minCost) / startTemp * (-1)));
 
                 }
 
