@@ -112,7 +112,7 @@ public class TabuSearch {
         int [] route;
 
         //wyznaczenie poczatkowej sciezki i kosztu jej przejscia
-        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minRoute = pomoc.algorytmZachlanny(graph);
         minCost = pomoc.getRouteCost(graph, minRoute);
 
         route = minRoute.clone();
@@ -250,7 +250,7 @@ public class TabuSearch {
         int [] minRoute = new int[numberOfVertex + 1];
         int [] route;
 
-        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minRoute = pomoc.algorytmZachlanny(graph);
         minCost = pomoc.getRouteCost(graph, minRoute);
         route = minRoute.clone();
 

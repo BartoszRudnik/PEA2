@@ -32,7 +32,7 @@ public class SymulowaneWyzarzanie {
         double finishTemp = 0.001;
 
         // wyznaczenie sciezki poczatkowej i kosztu przejscia tej sciezki
-        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minRoute = pomoc.algorytmZachlanny(graph);
         minCost = pomoc.getRouteCost(graph, minRoute);
 
         int resultCost = minCost;
@@ -135,6 +135,7 @@ public class SymulowaneWyzarzanie {
         //wypisanie najmniejszej wykrytej sciezki i kosztu jej przejscia
         pomoc.getResultRoute(resultRoute);
 
+        System.out.println(resultCost);
         System.out.println(pomoc.getRouteCost(graph, resultRoute));
 
     }
@@ -150,7 +151,7 @@ public class SymulowaneWyzarzanie {
         double startTemp = 1;
         double finishTemp = 0.001;
 
-        minRoute = pomoc.dataInitialization(graph, minRoute, minCost);
+        minRoute = pomoc.algorytmZachlanny(graph);
         minCost = pomoc.getRouteCost(graph, minRoute);
 
         int resultCost = minCost;

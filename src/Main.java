@@ -2,16 +2,16 @@ public class Main {
 
     public static void main(String [] args){
 
-        //UI ui = new UI();
-        //ui.showMenu();
+        UI ui = new UI();
+        ui.showMenu();
 
-        Data data = new Data();
+        /*Data data = new Data();
         FunkcjePomocnicze pomoc = new FunkcjePomocnicze();
 
         int [][] graph;
         int numberOfVertex;
 
-        data.readData2("ftv33.atsp");
+        data.readData2("rbg403.atsp");
 
         graph = data.getGraph();
         numberOfVertex = data.getV();
@@ -27,7 +27,7 @@ public class Main {
         }
         System.out.println();
 
-        System.out.println(pomoc.getRouteCost(graph, route));
+        System.out.println(pomoc.getRouteCost(graph, route));*/
 
     }
 
