@@ -17,7 +17,7 @@ public class FunkcjePomocnicze {
         int [] route = new int[numberOfVertex + 1];
         int [] resultRoute = new int[numberOfVertex + 1];
         boolean check;
-        int oldBestIndex = 0;
+        int oldBestIndex;
         int actualBestIndex = 0;
 
         for(int i = 0; i < numberOfVertex; i++){
@@ -33,12 +33,13 @@ public class FunkcjePomocnicze {
 
                     for(int g = 0; g <= i; g++){
 
-                        if(j == route[g]){
+                        if (j == route[g]) {
                             check = false;
+                            break;
                         }
 
                     }
-                    if(graph[oldBestIndex][j] < bestCost && check == true){
+                    if(graph[oldBestIndex][j] < bestCost && check){
 
                         bestCost = graph[oldBestIndex][j];
                         actualBestIndex = j;

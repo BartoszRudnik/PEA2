@@ -11,7 +11,7 @@ public class Main {
         int [][] graph;
         int numberOfVertex;
 
-        data.readData("tsp_6_2.txt");
+        data.readData2("ftv33.atsp");
 
         graph = data.getGraph();
         numberOfVertex = data.getV();
