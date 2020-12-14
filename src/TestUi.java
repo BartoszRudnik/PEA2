@@ -6,9 +6,9 @@ public class TestUi {
 
     private int [][] graph;
     private int numberOfVertex;
-    private int liczbaSekund = 5;
-    private int rodzajSasiedztwa = 0;
-    private int schematSchladzania = 0;
+    private int liczbaSekund = 10;
+    private int rodzajSasiedztwa = 2;
+    private int schematSchladzania = 2;
     private int kryteriumAspiracji = 0;
     private int limitIteracji = 5;
     private int liczbaIteracji = 10;
@@ -55,6 +55,8 @@ public class TestUi {
                     graph = data.getGraph();
                     numberOfVertex = data.getV();
 
+                    liczbaIteracji = numberOfVertex;
+
                     break;
 
                 case 2:
@@ -66,7 +68,7 @@ public class TestUi {
                         liczbaSekund = scanner.nextInt();
 
                         if(liczbaSekund <= 0) {
-                            liczbaSekund = 5;
+                            liczbaSekund = 10;
                             throw new Exception();
                         }
 
@@ -92,7 +94,7 @@ public class TestUi {
                         rodzajSasiedztwa = scanner.nextInt();
 
                         if(rodzajSasiedztwa < 0 || rodzajSasiedztwa > 2){
-                            rodzajSasiedztwa = 0;
+                            rodzajSasiedztwa = 2;
                             throw new Exception();
                         }
 
@@ -150,7 +152,7 @@ public class TestUi {
                         schematSchladzania = scanner.nextInt();
 
                         if(schematSchladzania < 0 || schematSchladzania > 2){
-                            schematSchladzania = 0;
+                            schematSchladzania = 2;
                             throw new Exception();
                         }
 
@@ -247,7 +249,7 @@ public class TestUi {
 
                         if(liczbaIteracji <= 0){
 
-                            liczbaIteracji = 10;
+                            liczbaIteracji = numberOfVertex;
                             throw new Exception();
 
                         }

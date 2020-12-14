@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PEA2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PEA2_jar</output-path>
+    <root id="archive" name="PEA2.jar">
+      <element id="module-output" name="PEA2" />
+    </root>
+  </artifact>
+</component>

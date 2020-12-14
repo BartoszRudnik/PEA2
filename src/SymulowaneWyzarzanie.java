@@ -28,7 +28,7 @@ public class SymulowaneWyzarzanie {
 
         int minCost = Integer.MAX_VALUE;
         int actualCost;
-        double startTemp = 1.0;
+        double startTemp = 10 * numberOfVertex;
         double finishTemp = 0.001;
 
         // wyznaczenie sciezki poczatkowej i kosztu przejscia tej sciezki
@@ -48,6 +48,8 @@ public class SymulowaneWyzarzanie {
 
             //sciezka, ktorej sasiedztwo bedzie badane
             route = resultRoute.clone();
+
+            startTemp = 10 * numberOfVertex;
 
             for(int k = 0; k < iterationsLimit; k++) {
 
@@ -93,17 +95,22 @@ public class SymulowaneWyzarzanie {
                     }
 
                 }// uwzglednienie funkcji prawdopodobienstwa
-                else if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
+                else {
+                    if (moveTest < Math.exp((actualCost - minCost) / startTemp * (-1))) {
 
-                    minCost = actualCost;
-                    minRoute = route.clone();
+                        minCost = actualCost;
+                        minRoute = route.clone();
 
-                    if(minCost < resultCost){
+                        if (minCost < resultCost) {
 
-                        resultCost = minCost;
-                        resultRoute = minRoute.clone();
+                            resultCost = minCost;
+                            resultRoute = minRoute.clone();
+
+                        }
 
                     }
+
+                    System.out.println(Math.exp((actualCost - minCost) / startTemp * (-1)));
 
                 }
 
